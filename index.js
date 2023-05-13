@@ -20,22 +20,45 @@ const gateway = new WebSocketManager({
 // Create a client to emit relevant events.
 const client = new Client({ rest, gateway });
 
-// Load interactions listed in `interactions` directory
+// Load interactions listed in folders in `interactions` directory
 const interactions = new Collection()
 
-const interactionFiles = fs.readdirSync(`./interactions`).filter((file) => file.endsWith(".js"));
 
-for (const file of interactionFiles) {
-    const fileData = (await import(`./interactions/${file}`)).default;
+const foldersPath = new URL('interactions/', import.meta.url);
+const interactionFolders = fs.readdirSync(foldersPath);
 
-    if(fileData.name && typeof fileData.execute === "function") interactions.set(fileData.name, fileData);
+
+for (const folder of interactionFolders) {
+  const interactionsPath = new URL(folder, foldersPath)
+  const interactionFiles = fs.readdirSync(interactionsPath).filter((file) => file.endsWith(".js"));
+  for (const file of interactionFiles) {
+    const fileData = (await import(new URL(`${folder}/${file}`, interactionsPath).toString())).default;
+
+    if(fileData.name && typeof fileData.execute === "function") interactions.set(fileData.name, { ...fileData, type: folder });
+  }
 }
 
 // Listen for interactions
 client.on(GatewayDispatchEvents.InteractionCreate, async ({ data: interaction, api }) => {
+  let interactionData;
 
-  const interactionData = interactions.get(interaction.data.name ?? interaction.data.custom_id)
-  if(interactionData && interaction.type === interactionData.interactionType) interactionData.execute(interaction, api);
+  if (interaction.type === InteractionType.ApplicationCommand){
+    interactionData = interactions.find(i => i.name === interaction.data.name && i.type === 'commands' && i.commandType === interaction.data.type)
+  }
+
+  else if (interaction.type === InteractionType.ApplicationCommandAutocomplete){
+    interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'autocompletes')
+  }
+  
+  else if (interaction.type === InteractionType.MessageComponent){
+    interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'components' && i.componentType === interaction.data.component_type)
+  }
+
+  else if (interaction.type === InteractionType.ModalSubmit){
+    interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'modals')
+  }
+
+  interactionData.execute(interaction, api)
 });
 
 // Listen for the ready event

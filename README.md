@@ -1,4 +1,6 @@
-Discord.js core example bot
+## About
+
+An example bot, to show abblities with @discordjs/core
 
 ## Intoduction
 
@@ -14,6 +16,8 @@ Here are some reasons:
 
 The example doesnt contain too much functions, to allow you imagine how beautiful your feature bot is going to be
 
-## Contributors
+## Contrubuting
 
 Currently only [Jaw0r3k](https://discord.com/users/693055800322818149)
+
+To start helping with the example bot, you can create a github issue or an pull request

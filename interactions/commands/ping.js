@@ -1,9 +1,9 @@
 import { ActionRowBuilder, ButtonBuilder } from "@discordjs/builders";
-import { ButtonStyle, InteractionType, MessageFlags } from "@discordjs/core";
+import { ApplicationCommandType, ButtonStyle, MessageFlags } from "@discordjs/core";
 
 export default {
     name: "ping",
-    interactionType: InteractionType.ApplicationCommand,
+    commandType: ApplicationCommandType.ChatInput,
     async execute(interaction, api) {
         await api.interactions.reply(interaction.id, interaction.token, {
             content: "Pong!",
