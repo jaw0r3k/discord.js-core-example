@@ -18,6 +18,6 @@ The example doesnt contain too much functions, to allow you imagine how beautifu
 
 ## Contrubuting
 
-Currently only [Jaw0r3k](https://discord.com/users/693055800322818149)
+Owner of the repository is [Jaw0r3k](https://discord.com/users/693055800322818149)
 
-To start helping with the example bot, you can create a github issue or an pull request
+To start contributing the example bot, you can create a github issue or an pull request
