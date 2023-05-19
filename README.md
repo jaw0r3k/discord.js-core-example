@@ -1,10 +1,10 @@
 ## About
 
-An example bot, to show abblities with @discordjs/core
+An example bot, to show abblities with [@discordjs/core](https://discord.js.org/docs/packages/core/main)
 
 ## Intoduction
 
-This repository will show you diffrent usage cases of @discordjs/core
+This repository will show you diffrent usage cases of [@discordjs/core](https://discord.js.org/docs/packages/core/main)
 
 You may ask, why would you need it?
 Here are some reasons:
