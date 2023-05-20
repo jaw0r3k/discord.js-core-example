@@ -1,10 +1,10 @@
 ## About
 
-An example bot, to show abblities with @discordjs/core
+An example bot, to show abblities with [@discordjs/core](https://discord.js.org/docs/packages/core/main)
 
 ## Intoduction
 
-This repository will show you diffrent usage cases of @discordjs/core
+This repository will show you diffrent usage cases of [@discordjs/core](https://discord.js.org/docs/packages/core/main)
 
 You may ask, why would you need it?
 Here are some reasons:
@@ -18,6 +18,6 @@ The example doesnt contain too much functions, to allow you imagine how beautifu
 
 ## Contrubuting
 
-Currently only [Jaw0r3k](https://discord.com/users/693055800322818149)
+Owner of the repository is [Jaw0r3k](https://discord.com/users/693055800322818149)
 
-To start helping with the example bot, you can create a github issue or an pull request
+To start contributing the example bot, you can create a github issue or an pull request
