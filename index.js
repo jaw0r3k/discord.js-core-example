@@ -20,13 +20,12 @@ const gateway = new WebSocketManager({
 // Create a client to emit relevant events.
 const client = new Client({ rest, gateway });
 
+
 // Load interactions listed in folders in `interactions` directory
 const interactions = new Collection()
 
-
 const foldersPath = new URL('interactions/', import.meta.url);
 const interactionFolders = fs.readdirSync(foldersPath);
-
 
 for (const folder of interactionFolders) {
   const interactionsPath = new URL(folder, foldersPath)
@@ -38,31 +37,33 @@ for (const folder of interactionFolders) {
   }
 }
 
+
 // Listen for interactions
 client.on(GatewayDispatchEvents.InteractionCreate, async ({ data: interaction, api }) => {
   let interactionData;
 
-  if (interaction.type === InteractionType.ApplicationCommand){
-    interactionData = interactions.find(i => i.name === interaction.data.name && i.type === 'commands' && i.commandType === interaction.data.type)
-  }
-
-  else if (interaction.type === InteractionType.ApplicationCommandAutocomplete){
-    interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'autocompletes')
-  }
-  
-  else if (interaction.type === InteractionType.MessageComponent){
-    interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'components' && i.componentType === interaction.data.component_type)
-  }
-
-  else if (interaction.type === InteractionType.ModalSubmit){
-    interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'modals')
+  switch (interaction.type) {
+    case InteractionType.ApplicationCommand:
+      interactionData = interactions.find(i => i.name === interaction.data.name && i.type === 'commands' && i.commandType === interaction.data.type);
+      break;
+    case InteractionType.ApplicationCommandAutocomplete:
+      interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'autocompletes');
+      break;
+    case InteractionType.MessageComponent:
+      interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.type === 'components' && i.componentType === interaction.data.component_type);
+      break;
+    case InteractionType.ModalSubmit:
+      interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.type === 'modals');
+      break;
   }
 
   interactionData.execute(interaction, api)
 });
 
+
 // Listen for the ready event
 client.once(GatewayDispatchEvents.Ready, ({ data }) => console.log(`Your ${data.user.username} is ready!`));
+
 
 // Start the WebSocket connection.
 gateway.connect();

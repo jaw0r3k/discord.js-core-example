@@ -4,7 +4,8 @@
   "description": "Example bot to show abilities with @discordjs/core",
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "deploy": "node deploy.js"
   },
   "private": true,
   "type": "module",
