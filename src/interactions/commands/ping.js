@@ -1,9 +1,8 @@
-import { ActionRowBuilder, ButtonBuilder } from "@discordjs/builders";
+import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "@discordjs/builders";
 import { ApplicationCommandType, ButtonStyle, MessageFlags } from "@discordjs/core";
 
 export default {
-    name: "ping",
-    commandType: ApplicationCommandType.ChatInput,
+    data: new SlashCommandBuilder().setName("ping").setDescription("Responds with pong!"),
     async execute(interaction, api) {
         await api.interactions.reply(interaction.id, interaction.token, {
             content: "Pong!",

@@ -2,19 +2,19 @@ import { Routes } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import * as fs from "node:fs";
 import * as dotenv from 'dotenv';
-import { SlashCommandBuilder } from "@discordjs/builders";
 
 dotenv.config();
 
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
+const folderPath = new URL('interactions/commands/', import.meta.url);
+const commandFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.js'));
 
-const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith('.js'));
-
-// Grab the SlashCommandBuilder#toJSON() output of each command's for deployment
+// Grab the Builder#toJSON() output of each command's for deployment
 for (const file of commandFiles) {
-    const command = (await import(`./commands/${file}`)).default;
-    commands.push(command.toJSON());
+    const fileData = (await import(new URL(file, folderPath).toString())).default;
+    if(!fileData?.data) continue;
+    commands.push(fileData.data.toJSON());
 }
 
 // Construct and prepare an instance of the REST module

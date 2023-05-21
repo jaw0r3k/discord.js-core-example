@@ -1,7 +1,7 @@
 {
   "name": "djs-core-example",
   "version": "0.0.0",
-  "description": "Example bot to show abilities with @discordjs/core",
+  "description": "Example bot to show abilities of @discordjs/core",
   "main": "src/index.js",
   "scripts": {
     "start": "node .",

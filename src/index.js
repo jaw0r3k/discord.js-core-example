@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { WebSocketManager } from "@discordjs/ws";
-import { GatewayDispatchEvents, GatewayIntentBits, InteractionType, Client } from "@discordjs/core";
+import { GatewayDispatchEvents, GatewayIntentBits, InteractionType, Client, ApplicationCommandType } from "@discordjs/core";
 import { Collection } from '@discordjs/collection'
 import * as dotenv from "dotenv";
 import * as fs from "node:fs";
@@ -33,7 +33,11 @@ for (const folder of interactionFolders) {
   for (const file of interactionFiles) {
     const fileData = (await import(new URL(`${folder}/${file}`, interactionsPath).toString())).default;
 
-    if(fileData.name && typeof fileData.execute === "function") interactions.set(fileData.name, { ...fileData, type: folder });
+    if (folder === "commands"){
+      if (fileData.data && typeof fileData.execute === "function" ) interactions.set(fileData.data.name, { ...fileData, type: fileData.data.type ?? ApplicationCommandType.ChatInput, folder });
+    } else { 
+      if (fileData.name && typeof fileData.execute === "function") interactions.set(fileData.name, { ...fileData, folder });
+    }
   }
 }
 
@@ -46,17 +50,18 @@ client.on(GatewayDispatchEvents.InteractionCreate, async ({ data: interaction, a
   switch (interaction.type) {
     case InteractionType.ApplicationCommand:
       resolver = InteractionOptionResolver(interaction)
-      interactionData = interactions.find(i => i.name === interaction.data.name && i.type === 'commands' && i.commandType === interaction.data.type);
+      interactionData = interactions.find(i => i.data.name === interaction.data.name && i.folder === 'commands' && i.type === interaction.data.type);
       break;
     case InteractionType.ApplicationCommandAutocomplete:
       resolver = InteractionOptionResolver(interaction)
-      interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'autocompletes');
+      interactionData = interactions.find(i => i.name === interaction.data.name  && i.folder === 'autocompletes');
       break;
     case InteractionType.MessageComponent:
-      interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.type === 'components' && i.componentType === interaction.data.component_type);
+      interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.folder === 'components' && i.componentType === interaction.data.component_type);
       break;
     case InteractionType.ModalSubmit:
-      interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.type === 'modals');
+      // TODO: Field resolver
+      interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.folder === 'modals');
       break;
   }
   interactionData.execute(interaction, api, resolver)

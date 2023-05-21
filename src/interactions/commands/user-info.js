@@ -1,9 +1,8 @@
-import { EmbedBuilder } from "@discordjs/builders";
+import { ContextMenuCommandBuilder, EmbedBuilder } from "@discordjs/builders";
 import { ApplicationCommandType } from "@discordjs/core";
 
 export default {
-    name: "User Info",
-    commandType: ApplicationCommandType.User,
+    data: new ContextMenuCommandBuilder().setName("User Info").setType(ApplicationCommandType.User),
     execute(interaction, api, options) {
         const selectedUser = options.getTargetUser()
         const selectedMember = options.getTargetMember()
