@@ -16,8 +16,25 @@ Here are some reasons:
 
 The example doesnt contain too much functions, to allow you imagine how beautiful your feature bot is going to be
 
+
+## Configuration
+
+Rename [`.env.example`](./.env.example`) to `.env` and fill it with all of your important data
+
+All slash commands are contained in [`commands`](./src/commands) directory
+
+Then you can deploy them by using `npm run deploy`
+
+Meanwhile [`interactions`](./src/interactions/) is splited into
+- [`commands`](./src/interactions/commands/): contains slash commands and context menus
+- [`components`](./src/interactions/commands/): buttons, select menus
+- `autocompletes`
+- `modals`
+
+Have a good fun making your bot! 🎉
+
 ## Contrubuting
 
 Owner of the repository is [Jaw0r3k](https://discord.com/users/693055800322818149)
 
-To start contributing the example bot, you can create a github issue or an pull request
+Fell free to improve the repository by opening an issue or creating a pull request

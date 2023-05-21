@@ -4,7 +4,7 @@ import { GatewayDispatchEvents, GatewayIntentBits, InteractionType, Client } fro
 import { Collection } from '@discordjs/collection'
 import * as dotenv from "dotenv";
 import * as fs from "node:fs";
-
+import { InteractionOptionResolver } from '@sapphire/discord-utilities'
 // Load environment variables from .env
 dotenv.config();
 
@@ -41,12 +41,15 @@ for (const folder of interactionFolders) {
 // Listen for interactions
 client.on(GatewayDispatchEvents.InteractionCreate, async ({ data: interaction, api }) => {
   let interactionData;
+  let resolver;
 
   switch (interaction.type) {
     case InteractionType.ApplicationCommand:
+      resolver = InteractionOptionResolver(interaction)
       interactionData = interactions.find(i => i.name === interaction.data.name && i.type === 'commands' && i.commandType === interaction.data.type);
       break;
     case InteractionType.ApplicationCommandAutocomplete:
+      resolver = InteractionOptionResolver(interaction)
       interactionData = interactions.find(i => i.name === interaction.data.name  && i.type === 'autocompletes');
       break;
     case InteractionType.MessageComponent:
@@ -56,8 +59,7 @@ client.on(GatewayDispatchEvents.InteractionCreate, async ({ data: interaction, a
       interactionData = interactions.find(i => i.name === interaction.data.custom_id  && i.type === 'modals');
       break;
   }
-
-  interactionData.execute(interaction, api)
+  interactionData.execute(interaction, api, resolver)
 });
 
 

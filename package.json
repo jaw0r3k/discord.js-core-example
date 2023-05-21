@@ -2,10 +2,10 @@
   "name": "djs-core-example",
   "version": "0.0.0",
   "description": "Example bot to show abilities with @discordjs/core",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "node .",
-    "deploy": "node deploy.js"
+    "deploy": "node src/deploy.js"
   },
   "private": true,
   "type": "module",
@@ -20,6 +20,7 @@
     "@discordjs/builders": "^1.6.3",
     "@discordjs/collection": "^1.5.1",
     "@discordjs/core": "^0.6.0",
+    "@sapphire/discord-utilities": "^3.0.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.39.0"
   }

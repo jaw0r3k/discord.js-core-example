@@ -4,10 +4,9 @@ import { ApplicationCommandType } from "@discordjs/core";
 export default {
     name: "User Info",
     commandType: ApplicationCommandType.User,
-    execute(interaction, api) {
-        // TODO: Make an interaction option resolver
-        const selectedUser = interaction.data.resolved.users[interaction.data.target_id]
-        const selectedMember = interaction.data.resolved.members?.[interaction.data.target_id]
+    execute(interaction, api, options) {
+        const selectedUser = options.getTargetUser()
+        const selectedMember = options.getTargetMember()
 
         const embed = new EmbedBuilder()
             .setTitle("User info")
@@ -24,7 +23,7 @@ export default {
                 ? api.rest.cdn.avatar(selectedUser.id, selectedUser.avatar) 
                 : api.rest.cdn.defaultAvatar(selectedUser.discriminator % 5)
             )
-            .setColor(selectedUser.accent_color ?? 0x1111)
+            .setColor(selectedUser.accent_color || 0xABCDEF)
 
             api.interactions.reply(interaction.id, interaction.token, { 
                 embeds: [embed.toJSON()]
